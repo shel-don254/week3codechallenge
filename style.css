@@ -1,65 +1,70 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background-color: #f5f5f5;
-  font-family: Arial, sans-serif;
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.heading {
+h1 {
+  background-color: orange;
   text-align: center;
-  margin-bottom: 20px;
+}
+h3 {
+  color: aliceblue;
+}
+#main {
+  background-color: rgb(247, 240, 251);
+  background-image: url(./backg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.subtitle {
-  color: #888;
+#body-title {
+  text-align: center;
 }
 
-.film.item {
-  cursor: pointer;
-  margin-bottom: 5px;
-  background-color: #fff;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+#body-subtitle {
+  text-align: center;
 }
 
-.film.item:hover {
-  background-color: #f5f5f5;
+#film-container img {
+  flex: 0 1 auto;
+  height: 150px;
+  margin-right: 0.5rem;
 }
 
-.movie-poster {
+.card {
+  box-shadow: 0 4px 8px 0 rgba(198, 64, 64, 0.2);
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+  background-color: white;
+}
+#film-image {
+  height: 75;
+  width: 75;
+}
+
+.sidenav {
+  height: 100%;
   width: 300px;
-  height: 450px;
-  object-fit: cover;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
 }
 
-.movie-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.movie-runtime,
-.movie-showtime,
-.movie-tickets {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.buy-button {
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
+.sidenav .film-list {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
   cursor: pointer;
+  word-break: break-al;
+}
+
+.sidenav .film-list:hover {
+  color: orange;
+}
+
+button {
+  background-color: orange;
+  color: black;
 }

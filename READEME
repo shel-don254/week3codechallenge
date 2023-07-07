@@ -1,9 +1,36 @@
-#MOVIE THEATER create an application that allows a user to buy movie tickets from the theater
+PHASE 1 week3codechallenge
 
-#Core Deliverables
+Description
+WELCOME TO FLATDANGO Flatdango is an application that allows a user to purchase movie tickets from the theater. You will see if the tickets aren available and the running time.
 
-    A user should see the first movie details when the page loads. i.e. the poster,showtime,runtime.The number of available tickets will need to be derived by subtracting the number of tickets_sold from the theater's capacity
+Development Requirements
+Visual StudioCode.
+Live server extension.
+Development Installattion
+To get the code
 
-    See a list of all the movies on the left side of the page.
+project Set-up
+Option 1 (live link)
+If you want to see the app running in real-time directly, you can just click on this link: https://phase-1-code-challenge-3.vercel.app/
 
-    A user should be able to buy tickets for a movie. if there are no more tickets the user should see that the movie is sold out.
+Option 2 (Cloning the repository)
+Cloning the repository: press git clone (git USH) on your terminal
+Move to the folder and install requirements
+cd week3codechallenge
+Open the directory with your preferd application(prefereably VScode)
+Right click on the index.html file and open with live server
+Open the application on your prefered browser
+Running the Application
+This application requires a live serve to be able to work properly
+
+Run this command on your terminal to get the backend server started: json-server --watch db.json
+THERE YOU GO! YOU CAN NOW ACTIVELY ENGAUGE WITH THE APPLICATION. HAVE FUN!
+Technology Used
+index.html
+CSS
+JavaScript
+Author
+Sheldon Mwangi
+
+Lincense
+ISC

@@ -1,80 +1,58 @@
-const URL = "https://project-code-challenge-3.vercel.app/db.json";
-const listHolder = document.getElementById("films");
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementsByClassName("film item")[0].remove();
-  fetchOne(URL);
-  fetchMovies(URL);
+document.addEventListener("DOMContentLoaded", (e) => {
+  console.log("The DOM has loaded");
+  showMovie();
+  movieDetails(JSON.parse(filmsObj));
 });
-
-function fetchOne(URL) {
-  fetch(URL)
+//A fetch function that will enable the movie list to load from db json
+function showMovie() {
+  fetch("https://phase-1-code-challenge-3.vercel.app/db.json")
     .then((response) => response.json())
-    .then((data) => {
-      setUpMovieDetails(data.films[0]);
-    });
+    .then((filmsObj) =>
+      filmsObj.films.forEach((films) => showMovieNames(films))
+    );
 }
+const filmDetails = document.getElementById("show-description");
 
-function fetchMovies(URL) {
-  fetch(URL)
-    .then((resp) => resp.json())
-    .then((movies) => {
-      movies.films.forEach((movie) => {
-        displayMovie(movie);
-      });
-    });
+//A function that creates the list of movies to be displayed
+function showMovieNames(films) {
+  const filmNames = document.createElement("li");
+  filmNames.className = "film-list";
+  filmNames.textContent = films.title;
+  filmDetails.append(filmNames);
+  filmNames.addEventListener("click", function onclick() {
+    movieDetails(films);
+  });
 }
+//This function will have a card that will contain all the movie details  after clicking
+function movieDetails(films) {
+  const filmName = document.getElementById("film-name");
+  const filmImg = document.getElementById("film-image");
+  const filmDescr = document.getElementById("film-description");
+  const filmRuntime = document.getElementById("film-runtime");
+  const filmShowtime = document.getElementById("film-showtime");
+  const availabletickets = document.getElementById("available-tickets");
 
-function displayMovie(movie) {
-  const list = document.createElement("li");
-  list.classList.add("film", "item");
-  list.textContent = movie.title;
-  listHolder.appendChild(list);
-  addClickEvent();
+  //The details will be the title, poster, running time, showing time and available tickets
+  filmName.textContent = films.title;
+  filmImg.src = films.poster;
+  filmDescr.textContent = films.description;
+  filmRuntime.textContent = `Runtime: ${films.runtime}minutes`;
+  filmShowtime.textContent = `Time: ${films.showtime}`;
+
+  //We will subtract the number of tickets to the tickets sold to display how many tickets remain after purchase
+  let remaindertickets = films.capacity - films.tickets_sold;
+  availabletickets.textContent = `Available tickets: ${remaindertickets}`;
+  const filmButton = document.getElementById("ticket-buyer");
+  filmButton.dataset.id = films.id;
+
+  //This button enables one to buy tickets and after the purchase the number of tickets are less by one after every click
+  filmButton.addEventListener("click", function reduceTickets() {
+    if (remaindertickets >= 0) {
+      return (availabletickets.textContent = `Available tickets: ${remaindertickets--}`);
+    }
+    //when the number of tickets reaches 0 then the tuckets are sold out
+    else if (remaindertickets < 0) {
+      return (availabletickets.textcontent = `sold-out`);
+    }
+  });
 }
-
-function addClickEvent() {
-  let children = listHolder.children;
-  for (let i = 0; i < children.length; i++) {
-    let child = children[i];
-    child.addEventListener("click", () => {
-      fetch(`${URL}`)
-        .then((res) => res.json())
-        .then((movie) => {
-          document.getElementById("buy-ticket").textContent = "Buy Ticket";
-          setUpMovieDetails(movie.films[i]);
-        });
-    });
-  }
-}
-
-function setUpMovieDetails(funMovie) {
-  const preview = document.getElementById("poster");
-  preview.src = funMovie.poster;
-
-  const movieTitle = document.querySelector("#title");
-  movieTitle.textContent = funMovie.title;
-
-  const movieTime = document.querySelector("#runtime");
-  movieTime.textContent = `${funMovie.runtime} minutes`;
-
-  const movieDescription = document.querySelector("#film-info");
-  movieDescription.textContent = funMovie.description;
-
-  const showTime = document.querySelector("#showtime");
-  showTime.textContent = funMovie.showtime;
-
-  const tickets = document.querySelector("#ticket-number");
-  tickets.textContent = funMovie.capacity - funMovie.tickets_sold;
-}
-
-const btn = document.getElementById("buy-ticket");
-btn.addEventListener("click", function (event) {
-  let remainingTickets = document.querySelector("#ticket-number").textContent;
-  event.preventDefault();
-  if (remainingTickets > 0) {
-    document.querySelector("#ticket-number").textContent = remainingTickets - 1;
-  } else if (parseInt(remainingTickets, 10) === 0) {
-    btn.textContent = "Sold Out";
-  }
-});
