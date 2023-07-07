@@ -2,25 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Flatdango - Movie Ticket Booking</title>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <main>
-      <header>
-        <h1>Flatiron Movie Theatre</h1>
-      </header>
-      <section>
-        <ul id="films">
-          <!-- Added the films via javascript -->
-        </ul>
-
-        <div id="first_movie" class="first_movie">
-          <!-- First Movie -->
+    <div class="container">
+      <div class="heading">
+        <div class="item">
+          <h2 class="ui header">
+            <i class="orange ticket icon"></i>
+            <div class="content">Flatdango</div>
+            <div id="subtitle">Flatdango Cinema</div>
+          </h2>
         </div>
-      </section>
-    </main>
-    <script defer src="index.js"></script>
+      </div>
+      <div class="ui centered grid">
+        <div class="four wide column">
+          <div class="list-container">
+            <!-- list of movies to be appended here -->
+            <ul class="ui divided list" id="films">
+              <li class="film item"></li>
+            </ul>
+          </div>
+        </div>
+        <!-- movie poster -->
+        <div class="four wide column">
+          <img
+            id="poster"
+            src="assets/placeholderImage.png"
+            alt="[MOVIE TITLE]"
+          />
+        </div>
+        <!-- movie details -->
+        <section id="infobox">
+          <div class="four wide column">
+            <div class="ui cards" id="showing">
+              <div class="card">
+                <div id="title" class="title"></div>
+                <div id="runtime" class="meta">[RUNTIME] minutes</div>
+                <div class="content">
+                  <div class="description" id="film-info"></div>
+                  <div>
+                    <span id="showtime" class="ui label">[SHOWTIME]</span>
+                    <span id="ticket-number">[--]</span> remaining tickets
+                  </div>
+                </div>
+                <!-- Buy ticket button -->
+                <div class="extra content">
+                  <button id="buy-ticket" class="ui orange button">
+                    Buy Ticket
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script src="./script.js"></script>
   </body>
 </html>

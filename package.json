@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db": "json-server --watch data.json --port 3000"
+    "db": "json-server --watch db.json --port 3000"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "package.js": "^1.1.3",
+    "package.json": "^2.0.1"
+  }
 }

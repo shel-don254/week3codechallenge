@@ -1,98 +1,80 @@
-// API endpoint:
-const API_URL = "http://localhost:3000/films";
+const URL = "https://project-code-challenge-3.vercel.app/db.json";
+const listHolder = document.getElementById("films");
 
-// fetch characters from API
-const fetchFilms = async () => {
-  const response = await fetch(API_URL);
-  const data = await response.json();
-  return data;
-};
-
-const fetchFilm = async (id) => {
-  const response = await fetch(`${API_URL}/${id}`);
-  const data = await response.json();
-  return data;
-};
-
-// buy ticket function
-const buyTicket = async (id) => {
-  const movie = await fetchFilm(id);
-  if (movie.tickets_sold === movie.capacity) {
-    alert("Sold out");
-    return;
-  }
-
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      tickets_sold: movie.tickets_sold + 1,
-    }),
-  });
-  const data = await response.json();
-  return data;
-};
-
-// get the character section from the DOM
-const filmSection = document.querySelector("#films");
-const first_movie = document.querySelector("#first_movie");
-
-const filmTemplate = (film) => {
-  const availableTickets = film.capacity - film.tickets_sold;
-  const soldOut = availableTickets === 0;
-
-  return `
-        <div class="movie" data-id="${film.id}">
-            <img src="${film.poster}" alt="${film.title}" />
-            <div class="movie_details">
-                <div class="movie_details_header">
-                    <h2>${film.title}</h2>
-                    <p class="badge">Time: ${film.runtime} min</p>
-                </div>
-                <div class="flex movie_details_extra">
-                    <p>📽 Showtime : ${film.showtime}</p>
-                   ${
-                     soldOut
-                       ? `<p> 🎫 Sold Out</p>`
-                       : `<p>🎫 Available : ${availableTickets}</p>`
-                   }
-                </div>
-            
-                <button type="button" id="buy_ticket" class='buy_ticket ${
-                  soldOut ? "disabled" : ""
-                }' data-id="${film.id}">
-                    Buy Ticket
-                </button>
-                <p>${film.description}</p>
-            </div>
-        </div>
-    `;
-};
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const films = await fetchFilms();
-  first_movie.innerHTML = filmTemplate(films[0]);
-
-  films.map((film, index) => {
-    // remove the first film from the list
-    if (index === 0) return;
-    const listMovie = document.createElement("li", { id: film.id });
-
-    listMovie.innerHTML = filmTemplate(film);
-    filmSection.append(listMovie);
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementsByClassName("film item")[0].remove();
+  fetchOne(URL);
+  fetchMovies(URL);
 });
 
-// add event listener to the film section
-const buyTicketButton = document.querySelector("#buy_ticket");
+function fetchOne(URL) {
+  fetch(URL)
+    .then((response) => response.json())
+    .then((data) => {
+      setUpMovieDetails(data.films[0]);
+    });
+}
 
-first_movie.addEventListener("click", async (e) => {
-  if (e.target.id === "buy_ticket") {
-    console.log(e.target.dataset.id);
-    const id = e.target.dataset.id;
-    const film = await buyTicket(id);
-    first_movie.innerHTML = filmTemplate(film);
+function fetchMovies(URL) {
+  fetch(URL)
+    .then((resp) => resp.json())
+    .then((movies) => {
+      movies.films.forEach((movie) => {
+        displayMovie(movie);
+      });
+    });
+}
+
+function displayMovie(movie) {
+  const list = document.createElement("li");
+  list.classList.add("film", "item");
+  list.textContent = movie.title;
+  listHolder.appendChild(list);
+  addClickEvent();
+}
+
+function addClickEvent() {
+  let children = listHolder.children;
+  for (let i = 0; i < children.length; i++) {
+    let child = children[i];
+    child.addEventListener("click", () => {
+      fetch(`${URL}`)
+        .then((res) => res.json())
+        .then((movie) => {
+          document.getElementById("buy-ticket").textContent = "Buy Ticket";
+          setUpMovieDetails(movie.films[i]);
+        });
+    });
+  }
+}
+
+function setUpMovieDetails(funMovie) {
+  const preview = document.getElementById("poster");
+  preview.src = funMovie.poster;
+
+  const movieTitle = document.querySelector("#title");
+  movieTitle.textContent = funMovie.title;
+
+  const movieTime = document.querySelector("#runtime");
+  movieTime.textContent = `${funMovie.runtime} minutes`;
+
+  const movieDescription = document.querySelector("#film-info");
+  movieDescription.textContent = funMovie.description;
+
+  const showTime = document.querySelector("#showtime");
+  showTime.textContent = funMovie.showtime;
+
+  const tickets = document.querySelector("#ticket-number");
+  tickets.textContent = funMovie.capacity - funMovie.tickets_sold;
+}
+
+const btn = document.getElementById("buy-ticket");
+btn.addEventListener("click", function (event) {
+  let remainingTickets = document.querySelector("#ticket-number").textContent;
+  event.preventDefault();
+  if (remainingTickets > 0) {
+    document.querySelector("#ticket-number").textContent = remainingTickets - 1;
+  } else if (parseInt(remainingTickets, 10) === 0) {
+    btn.textContent = "Sold Out";
   }
 });
